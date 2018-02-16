@@ -1,11 +1,16 @@
 import React from 'react'
 import { Font } from 'expo'
+import { StackNavigator } from 'react-navigation'
 import { Text, View, TouchableHighlight } from 'react-native'
+
+// Components
+import About from './sections/about/About'
+import Gameboard from './sections/game-board/Gameboard'
 
 // Styles
 import { styles } from './AppStyles'
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props){
     super(props)
 
@@ -24,6 +29,7 @@ export default class App extends React.Component {
 
   render() {
     const { fontLoaded } = this.state
+    const { navigation } = this.props
 
     return (
       <View style={styles.container}>
@@ -48,7 +54,7 @@ export default class App extends React.Component {
 
           <TouchableHighlight 
             style={styles.button}
-            onPress={() => alert('here')}
+            onPress={() => navigation.navigate('About', {fontLoaded})}
             underlayColor={'#fff'}
           >
             <Text style={styles.buttonText}>about</Text>
@@ -60,3 +66,21 @@ export default class App extends React.Component {
     )
   }
 }
+
+export default StackNavigator(
+  {
+    Home: {
+      screen: App
+    },
+    About: {
+      screen: About
+    }
+  },
+  {
+    initialRouteName: 'Home',
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false
+    }
+  }
+)
