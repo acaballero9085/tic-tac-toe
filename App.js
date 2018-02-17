@@ -46,10 +46,10 @@ class App extends React.Component {
         <View>
           <TouchableHighlight 
             style={styles.button}
-            onPress={() => alert('here')}
+            onPress={() => navigation.navigate('Gameboard', {fontLoaded})}
             underlayColor={'#fff'}
           >
-            <Text style={styles.buttonText}>start</Text>
+            <Text style={styles.buttonText}>play</Text>
           </TouchableHighlight>
 
           <TouchableHighlight 
@@ -74,6 +74,9 @@ export default StackNavigator(
     },
     About: {
       screen: About
+    },
+    Gameboard: {
+      screen: Gameboard
     }
   },
   {

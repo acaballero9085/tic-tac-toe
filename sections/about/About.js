@@ -13,13 +13,6 @@ export default class About extends React.Component {
         }
     }
 
-    static navigationOptions = {
-        headerStyle: {
-            backgroundColor: '#fff'
-        },
-        headerTintColor: '#fff',
-    }
-
     render(){
         const { navigation } = this.props
         const { fontLoaded } = this.state
