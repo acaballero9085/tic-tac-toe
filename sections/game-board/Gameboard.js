@@ -5,6 +5,9 @@ import { Text, View, TouchableHighlight, Dimensions } from 'react-native'
 // Styles
 import { styles } from './GameboardStyles'
 
+// Helpers
+import { checkForWin } from './helpers'
+
 export default class Gameboard extends React.Component {
     constructor(props){
         super(props)
@@ -19,21 +22,67 @@ export default class Gameboard extends React.Component {
             ],
             alternateCheck: false,
             playerScore: 0,
-            computerScore: 0
+            computerScore: 0,
+            moveCount: 0
         }
 
         this.markBoard = this.markBoard.bind(this)
     }
 
     markBoard(x, y){
-        const { board, alternateCheck } = this.state
+        const { board, alternateCheck, moveCount, playerScore, computerScore } = this.state
         let newBoard = board
 
         if (!alternateCheck && board[x][y] === ''){
             newBoard[x][y] = 'X'
+
+            if(checkForWin(newBoard, moveCount + 1, 'X', x, y)){
+                this.setState({
+                    playerScore: playerScore + 1,
+                    board: [
+                        ['', '', ''],
+                        ['', '', ''],
+                        ['', '', '']
+                    ],
+                    moveCount: 0
+                })
+
+                return
+            }
+
+            this.setState({moveCount: moveCount + 1})
         } else if (alternateCheck && board[x][y] === '') {
             newBoard[x][y] = 'O'
+
+            if(checkForWin(newBoard, moveCount + 1, 'O', x, y)){
+                this.setState({
+                    computerScore: computerScore + 1,
+                    board: [
+                        ['', '', ''],
+                        ['', '', ''],
+                        ['', '', '']
+                    ],
+                    moveCount: 0
+                })
+
+                return
+            }
+
+            this.setState({moveCount: moveCount + 1})
         } else {
+            return
+        }
+
+        if(moveCount + 1 === 9){
+            this.setState({
+                board: [
+                    ['', '', ''],
+                    ['', '', ''],
+                    ['', '', '']
+                ],
+                moveCount: 0
+            })
+
             return
         }
 
@@ -42,7 +91,7 @@ export default class Gameboard extends React.Component {
 
     render(){
         const { navigation } = this.props
-        const { fontLoaded, board, computerScore, playerScore } = this.state
+        const { fontLoaded, board, computerScore, playerScore, moveCount } = this.state
 
         return(
             <View style={styles.container}>
